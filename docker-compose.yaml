@@ -1,0 +1,94 @@
+services:
+  backend_service:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile
+    develop:
+      watch:
+        - action: sync
+          path: ./
+          target: /app
+          ignore:
+            - .venv
+            - .idea
+            - .git
+        - action: rebuild
+          path: requirements.txt
+    command: /start-django
+    env_file:
+      - path: .env
+        required: true
+    ports:
+      - ${PROJECT_PORT}:${PROJECT_PORT}
+    volumes:
+      - static_volume:/app/static
+      - media_volume:/app/media
+    depends_on:
+      - postgres_service
+      - rabbitmq_service
+
+  celery:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile
+    command: /start-celeryworker
+
+  postgres_service:
+    image: postgres:alpine
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - pg_data_p19:/var/lib/postgresql/data
+
+#  minio_service:
+#    image: minio/minio
+#    ports:
+#      - '9000:9000'
+#      - '9001:9001'
+#    environment:
+#      - MINIO_ROOT_USER="admin"
+#      - MINIO_ROOT_PASSWORD="io9YG0HS5A"
+#    env_file: .env
+#    command: server /data --console-address :9001
+#    volumes:
+#      - minio_volume:/data
+
+#  redis_service:
+#    image: redis:alpine
+#    ports:
+#      - ${REDIS_PORT}:${REDIS_PORT}
+#    volumes:
+#      - redis_volume:/data
+
+  rabbitmq_service:
+    image: rabbitmq:3-management
+    ports:
+      - 15672:15672
+      - ${RABBITMQ_PORT}:${RABBITMQ_PORT}
+
+  celery_beat:
+    build:
+      context: .
+      dockerfile: compose/django/Dockerfile
+    command: /start-celerybeat
+    depends_on:
+      - postgres_service
+      - rabbitmq_service
+  flower:
+    build:
+      context: .
+      dockerfile: compose/django/Dockerfile
+    command: celery -A root.celery.app flower --port=${FLOWER_PORT}
+    env_file: .env
+    ports:
+      - ${FLOWER_PORT}:${FLOWER_PORT}
+    depends_on:
+      - postgres_service
+      - rabbitmq_service
+
+volumes:
+  pg_data_p19:
+  media_volume:
+  static_volume:

@@ -1,0 +1,80 @@
+
+
+https://books.agiliq.com/projects/django-orm-cookbook/en/latest/index.html#
+https://books.agiliq.com/projects/django-admin-cookbook/en/latest/
+
+
+https://books.agiliq.com/projects/django-api-polls-tutorial/en/latest/index.html
+
+
+
+
+https://www.django-rest-framework.org/community/third-party-packages/
+
+https://chayanikamisra.medium.com/generate-swagger-doc-for-your-django-project-using-drf-yasg-e9db25773cfa
+
+https://docs.djangoproject.com/en/5.0/ref/models/querysets/#filter
+
+postman collection, swagger
+
+
+
+https://github.com/xolmomin/django_rest
+
+
+https://www.olx.uz/oz/elektronika/telefony/mobilnye-telefony/?currency=UZS
+
+
+filter
+ordering(qimmat, arzon)
+
+
+$, sum
+
+
+list
+detail
+
+docker, pycharm, python
+
+postgres,redis,mysql,mongodb,rabbitmq,minio,elasticsearch,nginx,
+
+
+
+
+
+1) sertifikatni python code (course, fullname)
+2)
+    passport detect
+    name, passport series number
+3) instagram (like, comment)
+
+
+
+
+
+
+
+docker compose exec -it backend_service python3 manage.py migrate
+
+docker exec -it dc913 python3 manage.py migrate
+
+docker exec -it dc913 sh
+python3 manage.py migrate
+
+
+scale up
+
+
+
+python3 manage.py runserver (single thread)
+gunicorn root.wsgi:application --bind 0.0.0.0:8000 ()
+
+
+
+docker compose
+django,celery(rabbitmq),postgres,redis(cache)
+
+
+compose watch
+
